@@ -8,6 +8,7 @@
 #include "ProjectInfo.hpp"
 #include "Event/EventManager.hpp"
 #include "Script/ScriptFactory.hpp"
+#include "User/UserManager.hpp"
 
 namespace UnitiNetEngine {
     class Uniti {
@@ -18,6 +19,7 @@ namespace UnitiNetEngine {
             const ProjectInfo &getProjectInfo() const;
             const EventManager &getEventManager() const;
             EventManager &getEventManager();
+            UserManager &getUserManager();
             ScriptFactory &getScriptFactory();
         private:
             Uniti(const std::string &projectPath);
@@ -25,6 +27,8 @@ namespace UnitiNetEngine {
             ProjectInfo _projectInfo;
             EventManager _eventManager;
             ScriptFactory _scriptFactory;
+            ObjectManager _objectManager;
+            UserManager _userManager;
             boost::asio::io_service _ioService;
             boost::asio::ip::udp::socket _socketUDP;
     };

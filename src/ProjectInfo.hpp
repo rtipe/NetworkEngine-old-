@@ -13,7 +13,10 @@ namespace UnitiNetEngine {
             explicit ProjectInfo(const std::string &projectPath);
             std::string name;
             std::string ip;
-            std::string scenePath;
+            std::string publicScenePath;
+            std::string privateScenePath;
+            Json::Value privateScene;
+            Json::Value publicScene;
             int portUDP;
             int portTCP;
     };

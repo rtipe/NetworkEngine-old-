@@ -15,6 +15,7 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::start() {
+        std::future<void> async;
         while (true) {
             std::string buffer;
             boost::asio::ip::udp::endpoint senderEndPoint;
@@ -23,17 +24,32 @@ namespace UnitiNetEngine {
                 try {
                     Json::Value command;
                     std::istringstream(buffer) >> command;
-                } catch (Json::Exception &e) {
-                    std::cout << "error inside message" << std::endl;
+                    Json::Value userInfo = command["user"];
+                    Json::Value receivedInfo = command["received"];
+
+                    if (!this->_userManager.isUserExist(userInfo))
+                        this->_userManager.createUser(userInfo);
+                    IUser &user = this->_userManager.getUser(userInfo);
+
+                    user.addPacket(command);
+                    user.checkSendedPacket(receivedInfo);
+                } catch (std::exception &e) {
+                    std::cout << "error inside command" << std::endl;
                     std::cout << e.what() << std::endl;
                 }
+            });
+            async = std::async(std::launch::async, [&] () {
+                async.wait();
+                this->_objectManager.update();
+                this->_userManager.update();
             });
         }
     }
 
     Uniti::Uniti(const std::string &projectPath):
     _projectInfo(projectPath),
-    _socketUDP(this->_ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), this->_projectInfo.portUDP)) {
+    _socketUDP(this->_ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), this->_projectInfo.portUDP)),
+    _objectManager(this->_projectInfo.publicScene) {
     }
 
     Uniti &Uniti::getInstance() {
