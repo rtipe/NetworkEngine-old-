@@ -26,6 +26,7 @@ namespace UnitiNetEngine {
         private:
             std::map<std::string, eventFunction> _events;
             std::map<std::string, broadcastFunction> _broadcasts;
+            std::mutex _mutex;
     };
 }
 

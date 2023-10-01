@@ -21,8 +21,11 @@ namespace UnitiNetEngine {
             ScriptFactory &getScriptFactory();
         private:
             Uniti(const std::string &projectPath);
+            static std::unique_ptr<Uniti> _instance;
             ProjectInfo _projectInfo;
             EventManager _eventManager;
             ScriptFactory _scriptFactory;
+            boost::asio::io_service _ioService;
+            boost::asio::ip::udp::socket _socketUDP;
     };
 }
