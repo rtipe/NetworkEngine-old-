@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <mutex>
 #include "IScript.hpp"
 
 namespace UnitiNetEngine {
@@ -20,5 +21,6 @@ namespace UnitiNetEngine {
             std::map<std::string, std::unique_ptr<IScript>> &getScripts();
         private:
             std::map<std::string, std::unique_ptr<IScript>> _scripts;
+            std::mutex _mutex;
     };
 }

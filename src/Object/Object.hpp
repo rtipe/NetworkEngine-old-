@@ -10,6 +10,7 @@
 namespace UnitiNetEngine {
     class Object {
         public:
+            Object(const std::string &name);
             Object(const Json::Value &value);
             void setEnable(bool value);
             bool isEnable() const;
@@ -17,5 +18,7 @@ namespace UnitiNetEngine {
             Transform &getTransform();
         private:
             Transform _transform;
+            bool _isEnable;
+            std::mutex _mutex;
     };
 }

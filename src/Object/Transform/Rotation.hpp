@@ -5,7 +5,7 @@
 #pragma once
 
 namespace UnitiNetEngine {
-    class Scale {
+    class Rotation {
         public:
             float getValue() const;
             void setValue(float value);
