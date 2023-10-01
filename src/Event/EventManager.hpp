@@ -17,8 +17,8 @@ namespace UnitiNetEngine {
             void removeEventListener(const std::string &name);
             void addBroadcastListener(const std::string &name, broadcastFunction function);
             void removeBroadcastListener(const std::string &name);
-            void emitEvent(const std::string &name);
-            void emitBroadcast(const std::string &name);
+            void emitEvent(const std::string &name, IUser &user, const Json::Value &value);
+            void emitBroadcast(const std::string &name, const Json::Value &value);
             const std::map<std::string, eventFunction> &getEvents() const;
             std::map<std::string, eventFunction> &getEvents();
             const std::map<std::string, broadcastFunction> &getBroadcasts() const;
