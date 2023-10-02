@@ -28,6 +28,7 @@ namespace UnitiNetEngine {
             void removeUser(int id);
             std::mutex &getMutex();
             void update();
+            std::map<boost::asio::ip::udp::endpoint, Json::Value> getPacketToSend();
         private:
             std::mutex _mutex;
             std::vector<std::unique_ptr<IUser>> _users;

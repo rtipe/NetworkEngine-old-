@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <json/json.h>
+#include <thread>
 #include "Uniti.hpp"
 
 namespace UnitiNetEngine {
@@ -15,7 +16,8 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::start() {
-        std::future<void> async;
+        std::future<void> asyncUpdate;
+        std::future<void> asyncSend;
         while (true) {
             std::string buffer;
             boost::asio::ip::udp::endpoint senderEndPoint;
@@ -38,10 +40,20 @@ namespace UnitiNetEngine {
                     std::cout << e.what() << std::endl;
                 }
             });
-            async = std::async(std::launch::async, [&] () {
-                async.wait();
+            asyncUpdate = std::async(std::launch::async, [&] () {
+                asyncUpdate.wait();
                 this->_objectManager.update();
                 this->_userManager.update();
+            });
+            asyncSend = std::async(std::launch::async, [&] () {
+               asyncSend.wait();
+               auto packets = this->_userManager.getPacketToSend();
+               for (auto &pair : packets) {
+                   Json::FastWriter fastWriter;
+                   std::string output = fastWriter.write(pair.second);
+                   this->_socketUDP.send_to(boost::asio::buffer(output), pair.first);
+               }
+               std::this_thread::sleep_for(std::chrono::milliseconds(10));
             });
         }
     }
