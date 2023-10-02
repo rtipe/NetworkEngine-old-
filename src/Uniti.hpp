@@ -23,6 +23,9 @@ namespace UnitiNetEngine {
             ScriptFactory &getScriptFactory();
         private:
             Uniti(const std::string &projectPath);
+            void startReceive();
+            void sendPackets();
+            void receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint, const boost::system::error_code &error, std::size_t length);
             static std::unique_ptr<Uniti> _instance;
             ProjectInfo _projectInfo;
             EventManager _eventManager;
