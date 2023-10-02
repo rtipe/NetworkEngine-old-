@@ -51,7 +51,7 @@ namespace UnitiNetEngine {
             std::string output = fastWriter.write(pair.second);
             this->_socketUDP.send_to(boost::asio::buffer(output), pair.first);
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->_projectInfo.latence));
         this->sendPackets();
     }
 
