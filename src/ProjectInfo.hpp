@@ -19,5 +19,6 @@ namespace UnitiNetEngine {
             Json::Value publicScene;
             int portUDP;
             int portTCP;
+            int latence;
     };
 }
