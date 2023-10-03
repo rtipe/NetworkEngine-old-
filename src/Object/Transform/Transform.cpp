@@ -5,4 +5,15 @@
 #include "Transform.hpp"
 
 namespace UnitiNetEngine {
-} // UnitiNetEngine
+    Position &Transform::getPosition() {
+        return this->_position;
+    }
+
+    Rotation &Transform::getRotation() {
+        return this->_rotation;
+    }
+
+    Scale &Transform::getScale() {
+        return this->_scale;
+    }
+}

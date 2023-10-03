@@ -4,12 +4,13 @@
 
 #pragma once
 
+#include <mutex>
+
 namespace UnitiNetEngine {
     class Rotation {
         public:
-            float getValue() const;
+            float getValue();
             void setValue(float value);
-            void setValue(IUser &user, float value);
         private:
             float _value;
             std::mutex _mutex;

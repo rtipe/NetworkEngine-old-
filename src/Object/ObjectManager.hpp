@@ -16,7 +16,6 @@ namespace UnitiNetEngine {
             void addObject(std::unique_ptr<Object> object);
             void removeObject(const std::string &name);
             void update();
-            void start();
         private:
             std::map<std::string, std::unique_ptr<Object>> _objects;
             std::mutex _mutex;

@@ -11,11 +11,8 @@
 namespace UnitiNetEngine {
     class Transform {
         public:
-            const Position &getPosition() const;
             Position &getPosition();
-            const Rotation &getRotation() const;
             Rotation &getRotation();
-            const Scale &getScale() const;
             Scale &getScale();
         private:
             Position _position;
