@@ -10,15 +10,12 @@
 namespace UnitiNetEngine {
     class Position {
         public:
-            float getX() const;
-            float getY() const;
-            float getZ() const;
+            float getX();
+            float getY();
+            float getZ();
             void setX(float value);
             void setY(float value);
             void setZ(float value);
-            void setX(IUser &user, float value);
-            void setY(IUser &user, float value);
-            void setZ(IUser &user, float value);
         private:
             float _x;
             float _y;

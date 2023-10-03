@@ -4,15 +4,15 @@
 
 #pragma once
 
+#include <mutex>
+
 namespace UnitiNetEngine {
     class Scale {
         public:
-            float getX() const;
-            float getY() const;
+            float getX();
+            float getY();
             void setX(float value);
             void setY(float value);
-            void setX(IUser &user, float value);
-            void setY(IUser &user, float value);
         private:
             float _x;
             float _y;
