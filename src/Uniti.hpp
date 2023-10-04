@@ -14,7 +14,7 @@
 namespace UnitiNetEngine {
     class Uniti {
         public:
-            void init(const std::string &projectPath);
+            static void init(const std::string &projectPath);
             void start();
             static Uniti &getInstance();
             const ProjectInfo &getProjectInfo() const;

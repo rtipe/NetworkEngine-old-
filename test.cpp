@@ -7,7 +7,9 @@
 
 int main() {
     try {
-        UnitiNetEngine::Uniti::getInstance();
+        UnitiNetEngine::Uniti::init("../json/project.json");
+
+        UnitiNetEngine::Uniti::getInstance().start();
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
     }

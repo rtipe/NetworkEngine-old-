@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <json/value.h>
+#include <json/json.h>
 #include <string>
 
 namespace UnitiNetEngine {
@@ -12,7 +12,6 @@ namespace UnitiNetEngine {
         public:
             explicit ProjectInfo(const std::string &projectPath);
             std::string name;
-            std::string ip;
             std::string publicScenePath;
             std::string privateScenePath;
             Json::Value privateScene;
