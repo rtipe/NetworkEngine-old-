@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <boost/asio.hpp>
 #include "ProjectInfo.hpp"
 #include "Event/EventManager.hpp"
 #include "Script/ScriptFactory.hpp"

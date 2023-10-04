@@ -79,7 +79,7 @@ namespace UnitiNetEngine {
         [&] (auto &packet) {
             Json::Value info = std::get<0>(packet);
             int id = info.get("id", -1).asInt();
-            return std::ranges::any_of(sent.begin(), sent.end(), [&] (const auto &sentId) { return sentId.asInt() == id; });
+            return std::any_of(sent.begin(), sent.end(), [&] (const auto &sentId) { return sentId.asInt() == id; });
         });
         for (auto &packet : this->_sentPacket) {
             if (std::get<1>(packet) > 0)
