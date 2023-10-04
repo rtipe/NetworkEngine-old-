@@ -1,0 +1,8 @@
+{
+    "name": "ExampleName",
+    "portUDP": 7070,
+    "portTCP": 8080,
+    "latence": 15,
+    "publicScenePath": "../json/publicScene.json",
+    "privateScenePath": "../json/privateScene.json"
+}

@@ -36,6 +36,7 @@ add_executable(NetworkEngine
         src/Event/sendEventManager.hpp
         src/Event/sendEventManager.cpp
         src/User/AUser.hpp
-        src/User/AUser.cpp test.cpp)
+        src/User/AUser.cpp test.cpp
+        test.cpp)
 
 target_link_libraries(NetworkEngine PRIVATE JsonCpp::JsonCpp)
