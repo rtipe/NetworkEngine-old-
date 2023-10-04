@@ -6,11 +6,15 @@
 #include "Uniti.hpp"
 
 namespace UnitiNetEngine {
-    Object::Object(const std::string &name, sendEventManager &eventManager): _sendEventManager(eventManager) {
+    Object::Object(const std::string &name, sendEventManager &eventManager):
+    _sendEventManager(eventManager),
+    _transform(*this) {
         this->_name = name;
     }
 
-    Object::Object(const Json::Value &value, sendEventManager &eventManager): _sendEventManager(eventManager) {
+    Object::Object(const Json::Value &value, sendEventManager &eventManager):
+    _sendEventManager(eventManager),
+    _transform(*this) {
         const Json::Value& position = value["position"];
         const Json::Value& scale = value["position"];
         const Json::Value& scripts = value["position"];

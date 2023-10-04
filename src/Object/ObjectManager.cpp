@@ -3,6 +3,7 @@
 //
 
 #include "ObjectManager.hpp"
+#include "Object.hpp"
 
 namespace UnitiNetEngine {
 
