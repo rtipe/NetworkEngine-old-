@@ -3,6 +3,7 @@
 //
 
 #include "Position.hpp"
+#include "Object/Object.hpp"
 
 namespace UnitiNetEngine {
     float Position::getX() {

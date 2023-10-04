@@ -9,9 +9,10 @@
 #include "Scale.hpp"
 
 namespace UnitiNetEngine {
+    class Object;
     class Transform {
         public:
-            Transform(Object &object);
+            explicit Transform(Object &object);
             Position &getPosition();
             Rotation &getRotation();
             Scale &getScale();

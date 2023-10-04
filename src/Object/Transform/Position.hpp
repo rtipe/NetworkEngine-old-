@@ -8,6 +8,7 @@
 #include "User/IUser.hpp"
 
 namespace UnitiNetEngine {
+    class Object;
     class Position {
         public:
             Position(Object &object);
