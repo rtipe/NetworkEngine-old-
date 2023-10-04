@@ -20,6 +20,7 @@ namespace UnitiNetEngine {
             const EventManager &getEventManager() const;
             EventManager &getEventManager();
             UserManager &getUserManager();
+            ObjectManager &getObjectManager();
             ScriptFactory &getScriptFactory();
         private:
             Uniti(const std::string &projectPath);

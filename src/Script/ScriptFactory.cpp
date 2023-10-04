@@ -5,4 +5,7 @@
 #include "ScriptFactory.hpp"
 
 namespace UnitiNetEngine {
-} // UnitiNetEngine
+    std::unique_ptr<IScript> ScriptFactory::createScript(const std::string &name, Object &object) {
+        return this->creators[name](object);
+    }
+}

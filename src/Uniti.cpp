@@ -23,16 +23,15 @@ namespace UnitiNetEngine {
             Json::Value receivedInfo = command["received"];
 
             if (!this->_userManager.isUserExist(userInfo))
-                this->_userManager.createUser(userInfo);
+                this->_userManager.createUser(userInfo, senderEndPoint);
             IUser &user = this->_userManager.getUser(userInfo);
 
             user.addPacket(command);
-            user.checkSendedPacket(receivedInfo);
+            user.checkSentPacket(receivedInfo);
         } catch (std::exception &e) {
             std::cout << "error inside receiveBuffer" << std::endl;
             std::cout << e.what() << std::endl;
         }
-        this->startReceive();
     }
 
     void Uniti::startReceive() {
@@ -41,6 +40,7 @@ namespace UnitiNetEngine {
         this->_socketUDP.async_receive_from(boost::asio::buffer(buffer), senderEndPoint,
         [&] (const boost::system::error_code &error, std::size_t length) {
             this->receiveBuffer(buffer, senderEndPoint, error, length);
+            this->startReceive();
         });
     }
 
@@ -95,4 +95,12 @@ namespace UnitiNetEngine {
     }
 
     std::unique_ptr<Uniti> Uniti::_instance = nullptr;
+
+    UserManager &Uniti::getUserManager() {
+        return this->_userManager;
+    }
+
+    ObjectManager &Uniti::getObjectManager() {
+        return this->_objectManager;
+    }
 }

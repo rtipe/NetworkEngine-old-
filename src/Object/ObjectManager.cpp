@@ -11,7 +11,7 @@ namespace UnitiNetEngine {
 
         for (auto & element : elements) {
             const std::string name = element.get("name", "undefined").asString();
-            this->_objects[name] = std::make_unique<Object>(element);
+            this->_objects[name] = std::make_unique<Object>(element, this->_sendEvent);
         }
     }
 
@@ -24,10 +24,12 @@ namespace UnitiNetEngine {
     }
 
     void ObjectManager::addObject(std::unique_ptr<Object> object) {
+        const std::lock_guard<std::mutex> lock(this->_mutex);
         this->_objects[object->getName()] = std::move(object);
     }
 
     void ObjectManager::removeObject(const std::string &name) {
+        const std::lock_guard<std::mutex> lock(this->_mutex);
         this->_objects.erase(name);
     }
 
@@ -35,5 +37,9 @@ namespace UnitiNetEngine {
         for (auto &object : this->_objects) {
             object.second->update();
         }
+    }
+
+    sendEventManager &ObjectManager::getSendEvent() {
+        return this->_sendEvent;
     }
 }

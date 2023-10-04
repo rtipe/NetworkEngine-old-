@@ -10,6 +10,7 @@
 namespace UnitiNetEngine {
     class Position {
         public:
+            Position(Object &object);
             float getX();
             float getY();
             float getZ();
@@ -17,9 +18,10 @@ namespace UnitiNetEngine {
             void setY(float value);
             void setZ(float value);
         private:
-            float _x;
-            float _y;
-            float _z;
+            float _x = 0;
+            float _y = 0;
+            float _z = 0;
+            Object &_object;
             std::mutex _mutex;
     };
 }
