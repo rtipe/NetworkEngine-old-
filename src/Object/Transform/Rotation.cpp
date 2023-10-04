@@ -3,6 +3,7 @@
 //
 
 #include "Rotation.hpp"
+#include "Object/Object.hpp"
 
 namespace UnitiNetEngine {
 

@@ -6,9 +6,9 @@
 
 #include <mutex>
 #include "Event/sendEventManager.hpp"
-#include "Object/Object.hpp"
 
 namespace UnitiNetEngine {
+    class Object;
     class Rotation {
         public:
             Rotation(Object &object);

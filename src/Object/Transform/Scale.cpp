@@ -3,6 +3,7 @@
 //
 
 #include "Scale.hpp"
+#include "Object/Object.hpp"
 
 namespace UnitiNetEngine {
 
