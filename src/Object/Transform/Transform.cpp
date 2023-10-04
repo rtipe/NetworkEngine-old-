@@ -16,4 +16,11 @@ namespace UnitiNetEngine {
     Scale &Transform::getScale() {
         return this->_scale;
     }
+
+    Transform::Transform(Object &object):
+    _object(object),
+    _scale(object),
+    _rotation(object),
+    _position(object) {
+    }
 }

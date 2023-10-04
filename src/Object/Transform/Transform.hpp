@@ -11,6 +11,7 @@
 namespace UnitiNetEngine {
     class Transform {
         public:
+            Transform(Object &object);
             Position &getPosition();
             Rotation &getRotation();
             Scale &getScale();
@@ -18,5 +19,6 @@ namespace UnitiNetEngine {
             Position _position;
             Rotation _rotation;
             Scale _scale;
+            Object &_object;
     };
 }

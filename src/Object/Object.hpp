@@ -11,8 +11,8 @@
 namespace UnitiNetEngine {
     class Object {
         public:
-            Object(const std::string &name);
-            Object(const Json::Value &value);
+            Object(const std::string &name, sendEventManager &eventManager);
+            Object(const Json::Value &value, sendEventManager &eventManager);
             void setEnable(bool value);
             const std::string &getName() const;
             bool isEnable() const;
@@ -21,11 +21,13 @@ namespace UnitiNetEngine {
             const ScriptManager &getScriptManager() const;
             ScriptManager &getScriptManager();
             void update();
+            sendEventManager &getsendEvent();
         private:
             Transform _transform;
-            bool _isEnable;
+            bool _isEnable = true;
             std::mutex _mutex;
             std::string _name;
             ScriptManager _scriptManager;
+            sendEventManager &_sendEventManager;
     };
 }

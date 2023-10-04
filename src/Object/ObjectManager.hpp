@@ -16,9 +16,11 @@ namespace UnitiNetEngine {
             void addObject(std::unique_ptr<Object> object);
             void removeObject(const std::string &name);
             void update();
+            sendEventManager &getSendEvent();
         private:
             std::map<std::string, std::unique_ptr<Object>> _objects;
             std::mutex _mutex;
+            sendEventManager _sendEvent;
     };
 }
 

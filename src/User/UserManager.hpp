@@ -8,24 +8,24 @@
 #include "IUser.hpp"
 
 namespace UnitiNetEngine {
-    using createUserFunction = std::function<std::unique_ptr<IUser>(const Json::Value &value)>;
+    using createUserFunction = std::function<std::unique_ptr<IUser>(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint)>;
     class UserManager {
         public:
-            IUser &getUser(int id);
-            bool isUserExist(int id) const;
-            bool isUserExist(const Json::Value &user) const;
+            IUser &getUser(size_t id);
+            bool isUserExist(size_t id) const;
+            bool isUserExist(const Json::Value &value) const;
             IUser &getUser(const Json::Value &user);
             void addUser(std::unique_ptr<IUser> user);
             template<typename OBJECT>
             void addUserCreator() {
-                this->_creator = [&](const Json::Value &value) -> std::unique_ptr<IUser> {
+                this->_creator = [&](const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint) -> std::unique_ptr<IUser> {
                     return std::make_unique<OBJECT>(value);
                 };
             }
-            void createUser(const Json::Value &value);
+            std::unique_ptr<IUser> createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint);
             const std::vector<std::unique_ptr<IUser>> &getUsers() const;
             std::vector<std::unique_ptr<IUser>> &getUsers();
-            void removeUser(int id);
+            void removeUser(const Json::Value &value);
             std::mutex &getMutex();
             void update();
             std::map<boost::asio::ip::udp::endpoint, Json::Value> getPacketToSend();
