@@ -41,11 +41,12 @@ namespace UnitiNetEngine {
                 std::string text(this->_buffer, length);
                 std::cout << text << std::endl;
                 this->receiveBuffer(text, _senderEndPoint, error, length);
-                memset(this->_buffer, 0, this->_size);
-                this->startReceive();
             } else {
+                //this->_userManager.removeUser(_senderEndPoint);
                 std::cerr << "Error : " << error.message() << std::endl;
             }
+            memset(this->_buffer, 0, this->_size);
+            this->startReceive();
         });
     }
 

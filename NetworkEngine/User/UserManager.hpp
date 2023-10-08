@@ -26,6 +26,7 @@ namespace UnitiNetEngine {
             const std::vector<std::unique_ptr<IUser>> &getUsers() const;
             std::vector<std::unique_ptr<IUser>> &getUsers();
             void removeUser(const Json::Value &value);
+            void removeUser(const boost::asio::ip::udp::endpoint &endpoint);
             std::mutex &getMutex();
             void update();
             std::map<boost::asio::ip::udp::endpoint, Json::Value> getPacketToSend();

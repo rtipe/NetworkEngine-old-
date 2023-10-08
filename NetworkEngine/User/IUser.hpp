@@ -19,6 +19,7 @@ namespace UnitiNetEngine {
             virtual void updateObjectManager() = 0;
             virtual void start() = 0;
             virtual void end() = 0;
+            virtual std::mutex &getMutex() = 0;
             virtual bool isThisUser(const Json::Value &user) const = 0;
             virtual sendEventManager &getSendEvent() = 0;
             virtual ObjectManager &getObjectManager() = 0;

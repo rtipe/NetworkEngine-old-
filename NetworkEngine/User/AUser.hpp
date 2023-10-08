@@ -19,6 +19,7 @@ namespace UnitiNetEngine {
             void updateEvent() override;
             void checkSentPacket(const Json::Value &sent) override;
             std::vector<Json::Value> getPacketToSend() override;
+            std::mutex &getMutex() override;
         protected:
             AUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint);
             Json::Value createPacket();
