@@ -81,4 +81,12 @@ namespace UnitiNetEngine {
         }
         return packets;
     }
+
+    void UserManager::removeUser(const boost::asio::ip::udp::endpoint &endpoint) {
+        const std::lock_guard<std::mutex> lock(this->_mutex);
+        std::erase_if(this->_users, [&](std::unique_ptr<IUser> &user) {
+            user->end();
+            return user->getEndPoint() == endpoint;
+        });
+    }
 }

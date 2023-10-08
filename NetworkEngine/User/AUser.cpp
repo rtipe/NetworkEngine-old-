@@ -141,4 +141,8 @@ namespace UnitiNetEngine {
         packet["id"] = id;
         return packet;
     }
+
+    std::mutex &AUser::getMutex() {
+        return this->_mutex;
+    }
 }
