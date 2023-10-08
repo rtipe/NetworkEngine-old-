@@ -10,6 +10,8 @@
 #include "Event/EventManager.hpp"
 #include "Script/ScriptFactory.hpp"
 #include "User/UserManager.hpp"
+#include "ObjectManager.hpp"
+#include "Clock.hpp"
 
 namespace UnitiNetEngine {
     class Uniti {
@@ -36,5 +38,10 @@ namespace UnitiNetEngine {
             UserManager _userManager;
             boost::asio::io_service _ioService;
             boost::asio::ip::udp::socket _socketUDP;
+            std::thread _ioThread;
+            Clock _clock;
+            int _size = 50000;
+            char _buffer[50000];
+            boost::asio::ip::udp::endpoint _senderEndPoint;
     };
 }

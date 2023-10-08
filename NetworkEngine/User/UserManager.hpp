@@ -19,10 +19,10 @@ namespace UnitiNetEngine {
             template<typename OBJECT>
             void addUserCreator() {
                 this->_creator = [&](const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint) -> std::unique_ptr<IUser> {
-                    return std::make_unique<OBJECT>(value);
+                    return std::make_unique<OBJECT>(value, endpoint);
                 };
             }
-            std::unique_ptr<IUser> createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint);
+            void createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint);
             const std::vector<std::unique_ptr<IUser>> &getUsers() const;
             std::vector<std::unique_ptr<IUser>> &getUsers();
             void removeUser(const Json::Value &value);

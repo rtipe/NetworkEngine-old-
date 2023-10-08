@@ -5,10 +5,10 @@
 #pragma once
 
 #include <json/value.h>
+#include "Object.hpp"
 #include "Event/sendEventManager.hpp"
 
 namespace UnitiNetEngine {
-    class Object;
     class ObjectManager {
         public:
             ObjectManager(const Json::Value &value);
