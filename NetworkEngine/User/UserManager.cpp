@@ -27,6 +27,8 @@ namespace UnitiNetEngine {
         [&] (const std::unique_ptr<IUser> &user) {
             return user->isThisUser(value);
         });
+        if (it == this->_users.end())
+            throw std::invalid_argument("empty user");
         return it->operator*();
     }
 
@@ -36,8 +38,9 @@ namespace UnitiNetEngine {
         this->_users.push_back(std::move(user));
     }
 
-    std::unique_ptr<IUser> UserManager::createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint) {
-        return this->_creator(value, endpoint);
+    void UserManager::createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint) {
+        const std::lock_guard<std::mutex> lock(this->_mutex);
+        this->_users.push_back(this->_creator(value, endpoint));
     }
 
     const std::vector<std::unique_ptr<IUser>> &UserManager::getUsers() const {

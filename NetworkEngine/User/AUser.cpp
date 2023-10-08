@@ -2,6 +2,7 @@
 // Created by youba on 04/10/2023.
 //
 
+#include <iostream>
 #include "AUser.hpp"
 #include "Uniti.hpp"
 
@@ -49,6 +50,7 @@ namespace UnitiNetEngine {
     }
 
     void AUser::updateEvent() {
+        std::unique_lock<std::mutex> lock(this->_mutex);
         int nextId = (this->_waitedId + 1 >= 100) ? 0 : this->_waitedId + 1;
 
         auto itToHandle = std::find_if(this->_packetToHandle.begin(), this->_packetToHandle.end(),
@@ -59,11 +61,14 @@ namespace UnitiNetEngine {
         if (itToHandle == this->_packetToHandle.end()) return;
         Json::Value events = itToHandle.operator*()["events"];
 
-        for (const auto &event : events) {
-            const std::string &name = event.get("name", "undefined").asString();
-            Uniti::getInstance().getEventManager().emitEvent(name, *this, event);
+        if (!events.isNull()) {
+            for (const auto &event : events) {
+                const std::string &name = event.get("name", "undefined").asString();
+                lock.unlock();
+                Uniti::getInstance().getEventManager().emitEvent(name, *this, event);
+                lock.lock();
+            }
         }
-        std::unique_lock<std::mutex> lock(this->_mutex);
         if (this->_packetHandled.size() > 16)
             this->_packetHandled.pop_front();
         this->_packetHandled.push_back(nextId);

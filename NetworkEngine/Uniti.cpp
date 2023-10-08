@@ -35,41 +35,61 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::startReceive() {
-        std::string buffer;
-        boost::asio::ip::udp::endpoint senderEndPoint;
-        this->_socketUDP.async_receive_from(boost::asio::buffer(buffer), senderEndPoint,
+        this->_socketUDP.async_receive_from(boost::asio::buffer(this->_buffer, this->_size), _senderEndPoint,
         [&] (const boost::system::error_code &error, std::size_t length) {
-            this->receiveBuffer(buffer, senderEndPoint, error, length);
-            this->startReceive();
+            if (!error) {
+                std::string text(this->_buffer, length);
+                std::cout << text << std::endl;
+                this->receiveBuffer(text, _senderEndPoint, error, length);
+                memset(this->_buffer, 0, this->_size);
+                this->startReceive();
+            } else {
+                std::cerr << "Error : " << error.message() << std::endl;
+            }
         });
     }
 
     void Uniti::sendPackets() {
+        if (this->_clock.getMilliSeconds() < this->_projectInfo.latence)
+            return;
+        this->_clock.restart();
         auto packets = this->_userManager.getPacketToSend();
         for (auto &pair : packets) {
-            Json::FastWriter fastWriter;
-            std::string output = fastWriter.write(pair.second);
-            this->_socketUDP.send_to(boost::asio::buffer(output), pair.first);
+            try {
+                Json::FastWriter fastWriter;
+                std::string output = fastWriter.write(pair.second);
+                this->_socketUDP.send_to(boost::asio::buffer(output), pair.first);
+            } catch (std::exception &e) {
+                std::cout << "error sent " << e.what() << std::endl;
+            }
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(this->_projectInfo.latence));
-        this->sendPackets();
     }
 
     void Uniti::start() {
         this->startReceive();
-        std::async(std::launch::async, [&] () {
-            this->sendPackets();
-        });
+        this->_ioThread = std::thread([](boost::asio::io_context &io_context) {
+            io_context.run();
+        }, std::ref(this->_ioService));
         while (true) {
-            this->_objectManager.update();
-            this->_userManager.update();
+            try {
+                this->_objectManager.update();
+                this->_userManager.update();
+                this->sendPackets();
+            } catch (std::exception &e) {
+                std::cout << e.what() << std::endl;
+            }
         }
+        if (this->_ioThread.joinable())
+            this->_ioThread.join();
     }
 
     Uniti::Uniti(const std::string &projectPath):
     _projectInfo(projectPath),
     _socketUDP(this->_ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), this->_projectInfo.portUDP)),
     _objectManager(this->_projectInfo.publicScene) {
+        boost::asio::ip::address addr = this->_socketUDP.local_endpoint().address();
+        std::cout << "ip : " << addr << std::endl;
+        std::cout << "port : " << this->_projectInfo.portUDP << std::endl;
     }
 
     Uniti &Uniti::getInstance() {

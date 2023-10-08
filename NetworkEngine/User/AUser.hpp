@@ -5,6 +5,7 @@
 #pragma once
 
 #include "IUser.hpp"
+#include "ObjectManager.hpp"
 
 namespace UnitiNetEngine {
     class AUser : public IUser {

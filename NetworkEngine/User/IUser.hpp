@@ -7,12 +7,13 @@
 #include <json/value.h>
 #include <boost/asio/ip/udp.hpp>
 #include <list>
-#include "Object/ObjectManager.hpp"
 #include "Event/sendEventManager.hpp"
 
 namespace UnitiNetEngine {
+    class ObjectManager;
     class IUser {
         public:
+            virtual ~IUser() = default;
             virtual const Json::Value &getUserInfo() const = 0;
             virtual void update() = 0;
             virtual void updateObjectManager() = 0;
