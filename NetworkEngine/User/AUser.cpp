@@ -136,6 +136,7 @@ namespace UnitiNetEngine {
             i++;
         }
         this->_receivedPacket.clear();
+        this->_sendEventManager.clear();
         packet["events"] = events;
         packet["received"] = received;
         packet["id"] = id;

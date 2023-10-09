@@ -12,3 +12,4 @@ target_link_libraries(project PRIVATE JsonCpp::JsonCpp Threads::Threads)
 
 add_subdirectory(NetworkEngine)
 add_subdirectory(src)
+add_subdirectory(Scripts)
