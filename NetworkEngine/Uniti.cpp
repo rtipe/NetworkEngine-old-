@@ -15,7 +15,7 @@ namespace UnitiNetEngine {
         _instance.reset(new Uniti(projectPath));
     }
 
-    void Uniti::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint, const boost::system::error_code &error, std::size_t length) {
+    void Uniti::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint) {
         try {
             Json::Value command;
             std::istringstream(buffer) >> command;
@@ -39,11 +39,10 @@ namespace UnitiNetEngine {
         [&] (const boost::system::error_code &error, std::size_t length) {
             if (!error) {
                 std::string text(this->_buffer, length);
-                std::cout << text << std::endl;
-                this->receiveBuffer(text, _senderEndPoint, error, length);
+                auto *packet = new std::tuple<boost::asio::ip::udp::endpoint, std::string>(_senderEndPoint, text);
+                this->_queue.push(packet);
             } else {
-                //this->_userManager.removeUser(_senderEndPoint);
-                std::cerr << "Error : " << error.message() << std::endl;
+                //std::cerr << "Error : " << error.message() << std::endl;
             }
             memset(this->_buffer, 0, this->_size);
             this->startReceive();
@@ -76,6 +75,7 @@ namespace UnitiNetEngine {
                 this->_objectManager.update();
                 this->_userManager.update();
                 this->sendPackets();
+                this->handleReceivePackets();
             } catch (std::exception &e) {
                 std::cout << e.what() << std::endl;
             }
@@ -84,10 +84,18 @@ namespace UnitiNetEngine {
             this->_ioThread.join();
     }
 
+    void Uniti::handleReceivePackets() {
+        this->_queue.consume_all([&](std::tuple<boost::asio::ip::udp::endpoint, std::string> *packet) {
+            this->receiveBuffer(std::get<1>(*packet), std::get<0>(*packet));
+            delete packet;
+        });
+    }
+
     Uniti::Uniti(const std::string &projectPath):
     _projectInfo(projectPath),
     _socketUDP(this->_ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), this->_projectInfo.portUDP)),
-    _objectManager(this->_projectInfo.publicScene) {
+    _objectManager(this->_projectInfo.publicScene),
+    _queue(10000) {
         boost::asio::ip::address addr = this->_socketUDP.local_endpoint().address();
         std::cout << "ip : " << addr << std::endl;
         std::cout << "port : " << this->_projectInfo.portUDP << std::endl;
