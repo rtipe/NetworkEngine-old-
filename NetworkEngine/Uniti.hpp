@@ -6,6 +6,7 @@
 
 #include <string>
 #include <boost/asio.hpp>
+#include <boost/lockfree/queue.hpp>
 #include "ProjectInfo.hpp"
 #include "Event/EventManager.hpp"
 #include "Script/ScriptFactory.hpp"
@@ -29,7 +30,8 @@ namespace UnitiNetEngine {
             Uniti(const std::string &projectPath);
             void startReceive();
             void sendPackets();
-            void receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint, const boost::system::error_code &error, std::size_t length);
+            void receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint);
+            void handleReceivePackets();
             static std::unique_ptr<Uniti> _instance;
             ProjectInfo _projectInfo;
             EventManager _eventManager;
@@ -42,6 +44,7 @@ namespace UnitiNetEngine {
             Clock _clock;
             int _size = 50000;
             char _buffer[50000];
+            boost::lockfree::queue<std::tuple<boost::asio::ip::udp::endpoint, std::string> *> _queue;
             boost::asio::ip::udp::endpoint _senderEndPoint;
     };
 }
