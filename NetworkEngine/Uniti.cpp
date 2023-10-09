@@ -16,6 +16,7 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint) {
+        std::cout << buffer << std::endl;
         try {
             Json::Value command;
             std::istringstream(buffer) >> command;
@@ -71,14 +72,14 @@ namespace UnitiNetEngine {
             io_context.run();
         }, std::ref(this->_ioService));
         while (true) {
-            try {
+            //try {
                 this->_objectManager.update();
                 this->_userManager.update();
                 this->sendPackets();
                 this->handleReceivePackets();
-            } catch (std::exception &e) {
-                std::cout << e.what() << std::endl;
-            }
+            //} catch (std::exception &e) {
+            //    std::cout << e.what() << std::endl;
+            //}
         }
         if (this->_ioThread.joinable())
             this->_ioThread.join();

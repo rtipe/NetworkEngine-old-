@@ -5,12 +5,13 @@
 #include "EventManager.hpp"
 
 #include <utility>
+#include <iostream>
 
 namespace UnitiNetEngine {
 
     void EventManager::addEventListener(const std::string &name, eventFunction function) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
-        this->_events[name] = std::move(function);
+        this->_events[name] = function;
     }
 
     void EventManager::removeEventListener(const std::string &name) {
@@ -20,7 +21,7 @@ namespace UnitiNetEngine {
 
     void EventManager::addBroadcastListener(const std::string &name, broadcastFunction function) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
-        this->_broadcasts[name] = std::move(function);
+        this->_broadcasts[name] = function;
     }
 
     void EventManager::removeBroadcastListener(const std::string &name) {
