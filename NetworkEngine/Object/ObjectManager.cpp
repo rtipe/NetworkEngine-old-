@@ -35,8 +35,15 @@ namespace UnitiNetEngine {
     }
 
     void ObjectManager::update() {
+        while (!this->_deleteObjects.empty()) {
+            this->_objects.erase(this->_deleteObjects.front());
+        }
         for (auto &object : this->_objects) {
             object.second->update();
+        }
+        while (!this->_addObjects.empty()) {
+            this->_objects[this->_addObjects[0]->getName()] = std::move(this->_addObjects[0]);
+            this->_addObjects.erase(this->_addObjects.begin());
         }
     }
 

@@ -20,6 +20,8 @@ namespace UnitiNetEngine {
             sendEventManager &getSendEvent();
         private:
             std::map<std::string, std::unique_ptr<Object>> _objects;
+            std::vector<std::unique_ptr<Object>> _addObjects;
+            std::vector<std::string> _deleteObjects;
             std::mutex _mutex;
             sendEventManager _sendEvent;
     };
