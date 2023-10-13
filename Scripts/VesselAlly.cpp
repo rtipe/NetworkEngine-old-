@@ -21,20 +21,7 @@ void VesselAlly::start() {
 }
 
 void VesselAlly::update() {
-    Json::Value value;
-    Json::Value position;
-    value["id"] = this->_data;
-    position["x"] = this->_object.getTransform().getPosition().getX();
-    position["y"] = this->_object.getTransform().getPosition().getY();
-    value["position"] = position;
-    value["life"] = this->_life;
-    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers()) {
-        Json::Value data;
-        if (user.get()->getSendEvent().getEvents().contains("Vessel"))
-            data = user.get()->getSendEvent().getEvents().at("Vessel");
-        data[this->_object.getName()] = value;
-        user.get()->getSendEvent().addEvent("Vessel", data);
-    }
+    this->sendPosition({});
     this->checkCollisionWithMissile();
 }
 

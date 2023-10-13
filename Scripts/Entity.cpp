@@ -41,8 +41,13 @@ void Entity::spawnMissile(float speed, float damage) {
 
 void Entity::destroyEntity() {
     UnitiNetEngine::Uniti::getInstance().getObjectManager().removeObject(this->_object.getName());
-    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers())
-        user.get()->getSendEvent().addEvent("destroyEntity", this->_object.getName());
+    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers()) {
+        Json::Value data;
+        if (user.get()->getSendEvent().getEvents().contains("destroyEntity"))
+            data = user.get()->getSendEvent().getEvents().at("destroyEntity");
+        data[data.size()] = this->_object.getName();
+        user.get()->getSendEvent().addEvent("destroyEntity", data);
+    }
 }
 
 void Entity::spawnMissile(float speed, float damage, std::tuple<float, float> direction, Box box) {
@@ -74,12 +79,20 @@ UnitiNetEngine::Clock &Entity::getClock() {
     return this->_clock;
 }
 
-void Entity::sendPosition() {
+void Entity::sendPosition(const Json::Value &info) {
     Json::Value value;
     Json::Value position;
     value["id"] = this->_object.getName();
     position["x"] = this->_object.getTransform().getPosition().getX();
     position["y"] = this->_object.getTransform().getPosition().getY();
     value["position"] = position;
-    this->_object.getsendEvent().addEvent("EntityPosition", value);
+    value["life"] = this->_life;
+    value["info"] = info;
+    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers()) {
+        Json::Value data;
+        if (user.get()->getSendEvent().getEvents().contains("Vessel"))
+            data = user.get()->getSendEvent().getEvents().at("Vessel");
+        data[this->_object.getName()] = value;
+        user.get()->getSendEvent().addEvent("Vessel", data);
+    }
 }
