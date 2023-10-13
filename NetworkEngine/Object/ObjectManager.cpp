@@ -26,17 +26,18 @@ namespace UnitiNetEngine {
 
     void ObjectManager::addObject(std::unique_ptr<Object> object) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
-        this->_objects[object->getName()] = std::move(object);
+        this->_addObjects.push_back(std::move(object));
     }
 
     void ObjectManager::removeObject(const std::string &name) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
-        this->_objects.erase(name);
+        this->_deleteObjects.push_back(name);
     }
 
     void ObjectManager::update() {
         while (!this->_deleteObjects.empty()) {
             this->_objects.erase(this->_deleteObjects.front());
+            this->_deleteObjects.erase(this->_deleteObjects.begin());
         }
         for (auto &object : this->_objects) {
             object.second->update();

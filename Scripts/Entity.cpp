@@ -73,3 +73,13 @@ void Entity::spawnMissile(float speed, float damage, UnitiNetEngine::Object &to,
 UnitiNetEngine::Clock &Entity::getClock() {
     return this->_clock;
 }
+
+void Entity::sendPosition() {
+    Json::Value value;
+    Json::Value position;
+    value["id"] = this->_object.getName();
+    position["x"] = this->_object.getTransform().getPosition().getX();
+    position["y"] = this->_object.getTransform().getPosition().getY();
+    value["position"] = position;
+    this->_object.getsendEvent().addEvent("EntityPosition", value);
+}
