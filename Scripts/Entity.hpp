@@ -36,10 +36,10 @@ public:
     UnitiNetEngine::Clock &getClock();
 private:
     UnitiNetEngine::Clock _clock;
-    float _speed;
     Type _type;
     Box _box;
 protected:
     UnitiNetEngine::Object &_object;
     float _life;
+    float _speed;
 };

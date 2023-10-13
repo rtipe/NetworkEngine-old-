@@ -18,6 +18,7 @@ namespace UnitiNetEngine {
             void removeObject(const std::string &name);
             void update();
             sendEventManager &getSendEvent();
+            void addObjects(const Json::Value &value);
         private:
             std::map<std::string, std::unique_ptr<Object>> _objects;
             std::vector<std::unique_ptr<Object>> _addObjects;

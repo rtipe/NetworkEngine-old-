@@ -66,6 +66,7 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::start() {
+        this->_objectManager.addObjects(this->_projectInfo.publicScene);
         this->startReceive();
         this->_ioThread = std::thread([](boost::asio::io_context &io_context) {
             io_context.run();
@@ -94,7 +95,7 @@ namespace UnitiNetEngine {
     Uniti::Uniti(const std::string &projectPath):
     _projectInfo(projectPath),
     _socketUDP(this->_ioService, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), this->_projectInfo.portUDP)),
-    _objectManager(this->_projectInfo.publicScene),
+    _objectManager({}),
     _queue(10000) {
         boost::asio::ip::address addr = this->_socketUDP.local_endpoint().address();
         std::cout << "ip : " << addr << std::endl;
