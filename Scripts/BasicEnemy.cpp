@@ -9,7 +9,6 @@
 int BasicEnemy::_count = 0;
 
 void BasicEnemy::CreateBasicEnemy() {
-    std::cout << "spawn" << std::endl;
     BasicEnemy::_count = (BasicEnemy::_count >= 10000) ? 0 : BasicEnemy::_count + 1;
     auto object = std::make_unique<UnitiNetEngine::Object>("BasicEnemy" + std::to_string(BasicEnemy::_count), UnitiNetEngine::Uniti::getInstance().getObjectManager().getSendEvent());
     object->getScriptManager().addScript("BasicEnemy", std::make_unique<BasicEnemy>(*object, ENEMY, 100, 150, Box(0, 0, 150, 150)));
@@ -34,10 +33,16 @@ void BasicEnemy::update() {
     this->_clock.restart();
     if (this->_missile.getSeconds() >= 2) {
         this->_missile.restart();
-        this->spawnMissile(300, 10);
+        this->spawnMissile(300, this->_damage);
     }
     this->sendPosition({});
     this->checkCollisionWithMissile();
 }
 
 void BasicEnemy::awake(const Json::Value &value) {}
+
+void BasicEnemy::onOverlap(Entity &entity) {
+    Entity::onOverlap(entity);
+    entity.setLife(entity.getLife() - 30);
+    this->destroyEntity();
+}

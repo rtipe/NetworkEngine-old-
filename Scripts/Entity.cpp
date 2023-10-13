@@ -26,6 +26,21 @@ void Entity::checkCollisionWithMissile() {
             }
         }
     }
+    for (auto &object : UnitiNetEngine::Uniti::getInstance().getObjectManager().getObjects()) {
+        if (object.second->getScriptManager().getScripts().empty()) continue;
+        if (object.first == this->_object.getName()) continue;
+        try {
+            Entity &entity = dynamic_cast<Entity &>(*object.second->getScriptManager().getScripts().begin()->second);
+            if (entity.isCollided(collision)) {
+                entity.onOverlap(*this);
+                if (this->_life <= 0) {
+                    std::cout << this->_life << std::endl;
+                    this->destroyEntity();
+                    break;
+                }
+            }
+        } catch (std::exception &e) { }
+    }
 }
 
 void Entity::spawnMissile(float speed, float damage) {
@@ -96,4 +111,44 @@ void Entity::sendPosition(const Json::Value &info) {
         data[this->_object.getName()] = value;
         user.get()->getSendEvent().addEvent("Vessel", data);
     }
+}
+
+bool Entity::isCollided(const Entity::Box &box) const {
+    float thisLeft = this->_object.getTransform().getPosition().getX();
+    float thisRight = this->_object.getTransform().getPosition().getX() + this->_box.width;
+    float thisTop = this->_object.getTransform().getPosition().getY();
+    float thisBottom = this->_object.getTransform().getPosition().getY() + this->_box.height;
+
+    float otherLeft = box.x;
+    float otherRight = box.x + box.width;
+    float otherTop = box.y;
+    float otherBottom = box.y + box.height;
+
+    return !(thisRight < otherLeft || thisLeft > otherRight || thisBottom < otherTop || thisTop > otherBottom);
+}
+
+void Entity::onOverlap(Entity &entity) {}
+
+void Entity::setLife(float life) {
+    this->_life = life;
+}
+
+float Entity::getLife() const {
+    return this->_life;
+}
+
+float Entity::getDamage() const {
+    return this->_damage;
+}
+
+Entity::Type Entity::getType() const {
+    return this->_type;
+}
+
+Entity::Box Entity::getBox() const {
+    return this->_box;
+}
+
+void Entity::setDamage(float damage) {
+    this->_damage = damage;
 }
