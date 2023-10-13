@@ -34,7 +34,6 @@ void Entity::checkCollisionWithMissile() {
             if (entity.isCollided(collision)) {
                 entity.onOverlap(*this);
                 if (this->_life <= 0) {
-                    std::cout << this->_life << std::endl;
                     this->destroyEntity();
                     break;
                 }
