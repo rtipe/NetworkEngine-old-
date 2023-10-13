@@ -58,14 +58,24 @@ void Missile::createMissile(const std::string &name, Entity::Box box, float spee
     value["direction"]["x"] = std::get<0>(direction);
     value["direction"]["y"] = std::get<1>(direction);
     value["name"] = name + std::to_string(Missile::_count);
-    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers())
-        user.get()->getSendEvent().addEvent("createMissile", value);
+    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers()) {
+        Json::Value data;
+        if (user.get()->getSendEvent().getEvents().contains("createMissile"))
+            data = user.get()->getSendEvent().getEvents().at("createMissile");
+        data[data.size()] = value;
+        user.get()->getSendEvent().addEvent("createMissile", data);
+    }
 }
 
 void Missile::destroyMissile() {
     UnitiNetEngine::Uniti::getInstance().getObjectManager().removeObject(this->_object.getName());
-    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers())
-        user.get()->getSendEvent().addEvent("destroyMissile", this->_object.getName());
+    for (auto &user : UnitiNetEngine::Uniti::getInstance().getUserManager().getUsers()) {
+        Json::Value data;
+        if (user.get()->getSendEvent().getEvents().contains("destroyMissile"))
+            data = user.get()->getSendEvent().getEvents().at("destroyMissile");
+        data[data.size()] = this->_object.getName();
+        user.get()->getSendEvent().addEvent("destroyMissile", data);
+    }
 }
 
 float Missile::getDamage() const {

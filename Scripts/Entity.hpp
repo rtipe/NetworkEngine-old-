@@ -32,7 +32,7 @@ public:
     void spawnMissile(float speed, float damage, std::tuple<float, float> direction, Box box);
     void spawnMissile(float speed, float damage, UnitiNetEngine::Object &to, Box box);
     void destroyEntity();
-    void sendPosition();
+    void sendPosition(const Json::Value &info);
     UnitiNetEngine::Clock &getClock();
 private:
     UnitiNetEngine::Clock _clock;
