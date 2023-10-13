@@ -15,10 +15,6 @@ namespace UnitiNetEngine {
     void Rotation::setValue(float value) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
         this->_value = value;
-        Json::Value data;
-        data["name"] = this->_object.getName();
-        data["value"] = value;
-        this->_object.getsendEvent().addEvent("ROTATION", data);
     }
 
     Rotation::Rotation(Object &object): _object(object) {

@@ -16,7 +16,6 @@ namespace UnitiNetEngine {
     }
 
     void Uniti::receiveBuffer(const std::string &buffer, boost::asio::ip::udp::endpoint &senderEndPoint) {
-        std::cout << buffer << std::endl;
         try {
             Json::Value command;
             std::istringstream(buffer) >> command;

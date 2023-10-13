@@ -5,7 +5,6 @@
 #include <iostream>
 #include "Uniti.hpp"
 #include "User.hpp"
-#include "movementVessel.hpp"
 
 int main() {
     try {
@@ -13,7 +12,8 @@ int main() {
 
         UnitiNetEngine::Uniti::getInstance().getUserManager().addUserCreator<User>();
 
-        UnitiNetEngine::Uniti::getInstance().getScriptFactory().addScript<movementVessel>("movementVessel");
+        //UnitiNetEngine::Uniti::getInstance().getScriptFactory().addScript<VesselAlly>("VesselAlly");
+        //UnitiNetEngine::Uniti::getInstance().getScriptFactory().addScript<Missile>("Missile");
 
         UnitiNetEngine::Uniti::getInstance().start();
     } catch (std::exception &e) {
