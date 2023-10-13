@@ -7,6 +7,8 @@ target_sources(project PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/BasicEnemy.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/EnemiesHandler.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/UserController.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/VesselHeal.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/VesselWeapon.cpp"
 )
 
 target_include_directories(project PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")

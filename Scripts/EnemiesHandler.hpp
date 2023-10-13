@@ -17,4 +17,5 @@ public:
 private:
     UnitiNetEngine::Object &_object;
     UnitiNetEngine::Clock _clock;
+    UnitiNetEngine::Clock _heal;
 };

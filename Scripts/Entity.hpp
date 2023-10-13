@@ -21,12 +21,13 @@ public:
         ENEMY,
         ALLY
     };
-    Entity(UnitiNetEngine::Object &object, Type type, float life, float speed, Box box):
+    Entity(UnitiNetEngine::Object &object, Type type, float life, float speed, Box box, float damage = 10):
     _object(object),
     _type(type),
     _life(life),
     _speed(speed),
-    _box(box) {}
+    _box(box),
+    _damage(damage) {}
     void checkCollisionWithMissile();
     void spawnMissile(float speed, float damage);
     void spawnMissile(float speed, float damage, std::tuple<float, float> direction, Box box);
@@ -34,6 +35,14 @@ public:
     void destroyEntity();
     void sendPosition(const Json::Value &info);
     UnitiNetEngine::Clock &getClock();
+    bool isCollided(const Entity::Box &box) const;
+    virtual void onOverlap(Entity &entity);
+    void setLife(float life);
+    void setDamage(float damage);
+    float getLife() const;
+    float getDamage() const;
+    Type getType() const;
+    Box getBox() const;
 private:
     UnitiNetEngine::Clock _clock;
     Type _type;
@@ -42,4 +51,5 @@ protected:
     UnitiNetEngine::Object &_object;
     float _life;
     float _speed;
+    float _damage;
 };
