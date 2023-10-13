@@ -16,8 +16,8 @@ namespace UnitiNetEngine {
     _sendEventManager(eventManager),
     _transform(*this) {
         const Json::Value& position = value["position"];
-        const Json::Value& scale = value["position"];
-        const Json::Value& scripts = value["position"];
+        const Json::Value& scale = value["scale"];
+        const Json::Value& scripts = value["scripts"];
 
         this->_name = value.get("name", "").asString();
         this->_transform.getPosition().setX(position.get("x", 0).asFloat());

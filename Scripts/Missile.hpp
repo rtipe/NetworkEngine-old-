@@ -26,6 +26,7 @@ public:
     float getDamage() const;
     Entity::Type getType() const;
 private:
+    static int _count;
     UnitiNetEngine::Object &_object;
     UnitiNetEngine::Clock _clock;
     float _speed;

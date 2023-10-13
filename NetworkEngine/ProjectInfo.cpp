@@ -22,8 +22,8 @@ namespace UnitiNetEngine {
         this->privateScenePath = project.get("privateScenePath", "").asString();
 
         std::ifstream filePublicScene(this->publicScenePath);
-        filePublicScene >> this->privateScene;
+        filePublicScene >> this->publicScene;
         std::ifstream filePrivateScene(this->privateScenePath);
-        filePrivateScene >> this->publicScene;
+        filePrivateScene >> this->privateScene;
     }
 }
