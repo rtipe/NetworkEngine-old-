@@ -9,6 +9,7 @@
 void VesselAlly::start() {}
 
 void VesselAlly::update() {
+    std::cout << this->getLife() << " " << this->getDamage() << std::endl;
     this->sendPosition({});
     this->checkCollisionWithMissile();
 }

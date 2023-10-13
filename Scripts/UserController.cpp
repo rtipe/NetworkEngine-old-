@@ -23,7 +23,7 @@ void UserController::start() {
         for (auto &object : UnitiNetEngine::Uniti::getInstance().getObjectManager().getObjects()) {
             if (!user.isThisUser(object.first)) continue;
             VesselAlly &entity = dynamic_cast<VesselAlly &>(object.second->getScriptManager().getScript("VesselAlly"));
-            entity.spawnMissile(300, 10);
+            entity.spawnMissile(300, entity.getDamage());
         }
     });
 }
