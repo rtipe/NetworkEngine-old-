@@ -20,19 +20,11 @@ namespace UnitiNetEngine {
     void Scale::setX(float value) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
         this->_x = value;
-        Json::Value data;
-        data["name"] = this->_object.getName();
-        data["value"] = value;
-        this->_object.getsendEvent().addEvent("SCALE_X", data);
     }
 
     void Scale::setY(float value) {
         const std::lock_guard<std::mutex> lock(this->_mutex);
         this->_y = value;
-        Json::Value data;
-        data["name"] = this->_object.getName();
-        data["value"] = value;
-        this->_object.getsendEvent().addEvent("SCALE_Y", data);
     }
 
     Scale::Scale(Object &object): _object(object) {
