@@ -1,3 +1,15 @@
 {
-    "objects": []
+    "objects": [
+        {
+            "name": "system",
+            "scripts": [
+                {
+                    "name": "EnemiesHandler"
+                },
+                {
+                    "name": "UserController"
+                }
+            ]
+        }
+    ]
 }

@@ -51,4 +51,13 @@ namespace UnitiNetEngine {
     sendEventManager &ObjectManager::getSendEvent() {
         return this->_sendEvent;
     }
+
+    void ObjectManager::addObjects(const Json::Value &value) {
+        Json::Value elements = value["objects"];
+
+        for (auto & element : elements) {
+            const std::string name = element.get("name", "undefined").asString();
+            this->_objects[name] = std::make_unique<Object>(element, this->_sendEvent);
+        }
+    }
 }

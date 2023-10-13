@@ -2,6 +2,7 @@
 // Created by youba on 12/10/2023.
 //
 
+#include <iostream>
 #include "Entity.hpp"
 #include "Uniti.hpp"
 #include "Missile.hpp"
@@ -14,7 +15,7 @@ void Entity::checkCollisionWithMissile() {
         this->_box.height
     );
     for (auto &object : UnitiNetEngine::Uniti::getInstance().getObjectManager().getObjects()) {
-        if (!object.second->getScriptManager().getScripts().contains("Missile")) return;
+        if (!object.second->getScriptManager().getScripts().contains("Missile")) continue;
         Missile &missile = dynamic_cast<Missile &>(object.second->getScriptManager().getScript("Missile"));
         if (missile.isCollided(collision) && missile.getType() != this->_type) {
             this->_life -= missile.getDamage();
@@ -31,8 +32,8 @@ void Entity::spawnMissile(float speed, float damage) {
     Missile::createMissile("basicMissile", {
         static_cast<int>(this->_object.getTransform().getPosition().getX()),
         static_cast<int>(this->_object.getTransform().getPosition().getY()),
-        100,
-        20
+        32,
+        32
     }, speed, damage,
     (this->_type == ENEMY) ? std::tuple<float, float>(-1, 0) : std::tuple<float, float>(1, 0),
     this->_type);
