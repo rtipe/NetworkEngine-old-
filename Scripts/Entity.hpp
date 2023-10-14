@@ -27,7 +27,8 @@ public:
     _life(life),
     _speed(speed),
     _box(box),
-    _damage(damage) {}
+    _damage(damage),
+    _shootPosition(0, 0) {}
     void checkCollisionWithMissile();
     void spawnMissile(float speed, float damage);
     void spawnMissile(float speed, float damage, std::tuple<float, float> direction, Box box);
@@ -43,6 +44,7 @@ public:
     float getDamage() const;
     Type getType() const;
     Box getBox() const;
+    std::vector<std::reference_wrapper<UnitiNetEngine::Object>> getAlliesVessel();
 private:
     UnitiNetEngine::Clock _clock;
     Type _type;
@@ -52,4 +54,5 @@ protected:
     float _life;
     float _speed;
     float _damage;
+    std::tuple<int, int> _shootPosition;
 };

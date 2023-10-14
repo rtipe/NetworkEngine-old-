@@ -4,7 +4,14 @@
             "name": "system",
             "scripts": [
                 {
-                    "name": "EnemiesHandler"
+                    "name": "EnemiesHandler",
+                    "Boss": 2,
+                    "Kamikaze": 15,
+                    "Sniper": 10,
+                    "Tank": 20,
+                    "BasicEnemy": 30,
+                    "spawnVesselHeal": 20,
+                    "spawnVesselWeapon": 10
                 },
                 {
                     "name": "UserController"
