@@ -6,6 +6,7 @@
 #include "Entity.hpp"
 #include "Uniti.hpp"
 #include "Missile.hpp"
+#include "VesselAlly.hpp"
 
 void Entity::checkCollisionWithMissile() {
     Box collision(
@@ -44,10 +45,10 @@ void Entity::checkCollisionWithMissile() {
 
 void Entity::spawnMissile(float speed, float damage) {
     Missile::createMissile("basicMissile", {
-        static_cast<int>(this->_object.getTransform().getPosition().getX()),
-        static_cast<int>(this->_object.getTransform().getPosition().getY()),
-        32,
-        32
+        static_cast<int>(this->_object.getTransform().getPosition().getX()) + std::get<0>(this->_shootPosition),
+        static_cast<int>(this->_object.getTransform().getPosition().getY()) + std::get<1>(this->_shootPosition),
+        64,
+        64
     }, speed, damage,
     (this->_type == ENEMY) ? std::tuple<float, float>(-1, 0) : std::tuple<float, float>(1, 0),
     this->_type);
@@ -67,8 +68,8 @@ void Entity::destroyEntity() {
 
 void Entity::spawnMissile(float speed, float damage, std::tuple<float, float> direction, Box box) {
     Missile::createMissile("basicMissile", {
-        static_cast<int>(this->_object.getTransform().getPosition().getX()),
-        static_cast<int>(this->_object.getTransform().getPosition().getY()),
+        static_cast<int>(this->_object.getTransform().getPosition().getX()) + std::get<0>(this->_shootPosition),
+        static_cast<int>(this->_object.getTransform().getPosition().getY()) + std::get<1>(this->_shootPosition),
         box.width,
         box.height
     }, speed, damage,
@@ -81,8 +82,8 @@ void Entity::spawnMissile(float speed, float damage, UnitiNetEngine::Object &to,
     float y = to.getTransform().getPosition().getY() - this->_object.getTransform().getPosition().getY();
     auto length = std::sqrt(x * x + y * y);
     Missile::createMissile("basicMissile", {
-        static_cast<int>(this->_object.getTransform().getPosition().getX()),
-        static_cast<int>(this->_object.getTransform().getPosition().getY()),
+        static_cast<int>(this->_object.getTransform().getPosition().getX()) + std::get<0>(this->_shootPosition),
+        static_cast<int>(this->_object.getTransform().getPosition().getY()) + std::get<1>(this->_shootPosition),
         box.width,
         box.height
     }, speed, damage,
@@ -150,4 +151,13 @@ Entity::Box Entity::getBox() const {
 
 void Entity::setDamage(float damage) {
     this->_damage = damage;
+}
+
+std::vector<std::reference_wrapper<UnitiNetEngine::Object>> Entity::getAlliesVessel() {
+    std::vector<std::reference_wrapper<UnitiNetEngine::Object>> _allies;
+    for (auto &object : UnitiNetEngine::Uniti::getInstance().getObjectManager().getObjects()) {
+        if (!object.second->getScriptManager().getScripts().contains("VesselAlly")) continue;
+        _allies.push_back(*object.second);
+    }
+    return _allies;
 }

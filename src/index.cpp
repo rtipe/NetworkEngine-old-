@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Uniti.hpp"
 #include "User.hpp"
-#include "EnemiesHandler.hpp"
+#include "Enemies/EnemiesHandler.hpp"
 #include "UserController.hpp"
 
 int main() {

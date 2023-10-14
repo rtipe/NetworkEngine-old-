@@ -22,7 +22,7 @@ VesselAlly::VesselAlly(UnitiNetEngine::Object &object, Entity::Type type, float 
 
 void VesselAlly::createVesselAlly(const UnitiNetEngine::IUser &user) {
     auto object = std::make_unique<UnitiNetEngine::Object>(user.getUserInfo().asString(), UnitiNetEngine::Uniti::getInstance().getObjectManager().getSendEvent());
-    object->getScriptManager().addScript("VesselAlly", std::make_unique<VesselAlly>(*object, ALLY, 100, 200, Box(0, 0, 200, 200)));
+    object->getScriptManager().addScript("VesselAlly", std::make_unique<VesselAlly>(*object, ALLY, 100, 200, Box(0, 0, 32, 16)));
     object->getScriptManager().getScript("VesselAlly").awake(user.getUserInfo());
     object->getScriptManager().start();
     UnitiNetEngine::Uniti::getInstance().getObjectManager().addObject(std::move(object));
