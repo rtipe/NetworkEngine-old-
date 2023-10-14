@@ -13,6 +13,7 @@ public:
     void start() override;
     void update() override;
     void awake(const Json::Value &value) override;
+    UnitiNetEngine::Clock &getClock();
 private:
     Json::Value _data;
     UnitiNetEngine::Clock _clock;
