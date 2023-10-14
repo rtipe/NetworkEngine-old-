@@ -10,7 +10,7 @@ int VesselWeapon::_count = 0;
 void VesselWeapon::CreateVesselWeapon() {
     VesselWeapon::_count = (VesselWeapon::_count >= 10000) ? 0 : VesselWeapon::_count + 1;
     auto object = std::make_unique<UnitiNetEngine::Object>("VesselWeapon" + std::to_string(VesselWeapon::_count), UnitiNetEngine::Uniti::getInstance().getObjectManager().getSendEvent());
-    object->getScriptManager().addScript("VesselWeapon", std::make_unique<VesselWeapon>(*object, ALLY, 100, 250, Box(0, 0, 150, 150)));
+    object->getScriptManager().addScript("VesselWeapon", std::make_unique<VesselWeapon>(*object, ALLY, 100, 250, Box(0, 0, 50, 50)));
     object->getScriptManager().getScript("VesselWeapon").awake({});
     object->getScriptManager().start();
     object->getTransform().getPosition().setX(2000);

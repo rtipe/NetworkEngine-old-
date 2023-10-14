@@ -15,7 +15,9 @@ public:
     void update() override;
     void awake(const Json::Value &value) override;
 private:
+    Json::Value _data;
     UnitiNetEngine::Object &_object;
     UnitiNetEngine::Clock _clock;
-    UnitiNetEngine::Clock _heal;
+    UnitiNetEngine::Clock _spawn;
+    bool _isPaused = true;
 };
