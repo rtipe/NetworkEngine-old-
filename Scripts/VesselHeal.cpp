@@ -10,7 +10,7 @@ int VesselHeal::_count = 0;
 void VesselHeal::CreateVesselHeal() {
     VesselHeal::_count = (VesselHeal::_count >= 10000) ? 0 : VesselHeal::_count + 1;
     auto object = std::make_unique<UnitiNetEngine::Object>("VesselHeal" + std::to_string(VesselHeal::_count), UnitiNetEngine::Uniti::getInstance().getObjectManager().getSendEvent());
-    object->getScriptManager().addScript("VesselHeal", std::make_unique<VesselHeal>(*object, ALLY, 100, 200, Box(0, 0, 150, 150)));
+    object->getScriptManager().addScript("VesselHeal", std::make_unique<VesselHeal>(*object, ALLY, 100, 200, Box(0, 0, 50, 50)));
     object->getScriptManager().getScript("VesselHeal").awake({});
     object->getScriptManager().start();
     object->getTransform().getPosition().setX(2000);
