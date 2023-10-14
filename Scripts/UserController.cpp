@@ -13,10 +13,11 @@ void UserController::start() {
     UnitiNetEngine::Uniti::getInstance().getEventManager().addEventListener("vesselMovement", [&] (UnitiNetEngine::IUser &user, const Json::Value &data) {
         for (auto &object : UnitiNetEngine::Uniti::getInstance().getObjectManager().getObjects()) {
             if (!user.isThisUser(object.first)) continue;
+            VesselAlly &entity = dynamic_cast<VesselAlly &>(object.second->getScriptManager().getScript("VesselAlly"));
             const Json::Value &position = data["data"];
-            object.second->getTransform().getPosition().setX(object.second->getTransform().getPosition().getX() + position.get("x", 0).asFloat() * 1000 * (static_cast<float>(this->_clock.getMicroSeconds()) / 1000000));
-            object.second->getTransform().getPosition().setY(object.second->getTransform().getPosition().getY() + position.get("y", 0).asFloat() * 1000 * (static_cast<float>(this->_clock.getMicroSeconds()) / 1000000));
-            this->_clock.restart();
+            object.second->getTransform().getPosition().setX(object.second->getTransform().getPosition().getX() + position.get("x", 0).asFloat() * 1000 * (static_cast<float>(entity.getClock().getMicroSeconds()) / 1000000));
+            object.second->getTransform().getPosition().setY(object.second->getTransform().getPosition().getY() + position.get("y", 0).asFloat() * 1000 * (static_cast<float>(entity.getClock().getMicroSeconds()) / 1000000));
+            entity.getClock().restart();
         }
     });
     UnitiNetEngine::Uniti::getInstance().getEventManager().addEventListener("vesselShoot", [&] (UnitiNetEngine::IUser &user, const Json::Value &data) {
