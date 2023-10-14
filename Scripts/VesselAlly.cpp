@@ -27,3 +27,7 @@ void VesselAlly::createVesselAlly(const UnitiNetEngine::IUser &user) {
     object->getScriptManager().start();
     UnitiNetEngine::Uniti::getInstance().getObjectManager().addObject(std::move(object));
 }
+
+UnitiNetEngine::Clock &VesselAlly::getClock() {
+    return this->_clock;
+}
