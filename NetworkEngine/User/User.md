@@ -1,57 +1,83 @@
-## Class User (UnitiNetEngine)
+# Classes IUser and UserManager (UnitiNetEngine)
 
-The `AUser` class, part of the UnitiNetEngine namespace, represents an abstract user entity within the network engine. It provides functionalities related to object management, event handling, packet processing, and network communication. This class serves as a foundation for creating specific user implementations and managing interactions within the network engine.
+## Class IUser
 
-### Constructors
+The `IUser` class is part of the UnitiNetEngine namespace and represents the interface for user objects in the network engine. It defines a set of methods and functionalities that must be implemented by concrete user classes.
 
-- **`AUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint)`**: Constructor initializing an `AUser` instance with specific JSON data and a network endpoint representing the user's connection point.
+### Public Methods
 
-### Public Methods (Overrides)
+- **`virtual const Json::Value &getUserInfo() const = 0`**: Returns user information as a constant reference to a JSON value.
 
-- **`void updateObjectManager() override`**: Overrides the `updateObjectManager` method from `IUser` and updates the object manager associated with the user.
+- **`virtual void update() = 0`**: Updates the user, triggering necessary internal logic or behavior.
 
-- **`sendEventManager &getSendEvent() override`**: Overrides the `getSendEvent` method from `IUser` and returns a reference to the `sendEventManager` object, enabling event handling for the user.
+- **`virtual void updateObjectManager() = 0`**: Updates the associated object manager for the user.
 
-- **`ObjectManager &getObjectManager() override`**: Overrides the `getObjectManager` method from `IUser` and returns a reference to the object manager associated with the user, allowing object management operations.
+- **`virtual void start() = 0`**: Starts the user, initiating its operations.
 
-- **`boost::asio::ip::udp::endpoint &getEndPoint() override`**: Overrides the `getEndPoint` method from `IUser` and returns a reference to the network endpoint representing the user's connection point.
+- **`virtual void end() = 0`**: Ends the user, terminating its operations.
 
-- **`int getWaitedIdPacket() const override`**: Overrides the `getWaitedIdPacket` method from `IUser` and returns the waited packet ID for synchronization purposes.
+- **`virtual std::mutex &getMutex() = 0`**: Returns a reference to a mutex for handling concurrency and ensuring thread safety.
 
-- **`void addPacket(const Json::Value &packet) override`**: Overrides the `addPacket` method from `IUser` and adds a received packet to be processed by the user.
+- **`virtual bool isThisUser(const Json::Value &user) const = 0`**: Checks if the user matches the provided user information, returning a boolean value.
 
-- **`void updateEvent() override`**: Overrides the `updateEvent` method from `IUser` and updates user-related events.
+- **`virtual sendEventManager &getSendEvent() = 0`**: Returns a reference to the `sendEventManager` object for event handling.
 
-- **`void checkSentPacket(const Json::Value &sent) override`**: Overrides the `checkSentPacket` method from `IUser` and checks the sent packets for acknowledgment.
+- **`virtual ObjectManager &getObjectManager() = 0`**: Returns a reference to the object manager associated with the user.
 
-- **`std::vector<Json::Value> getPacketToSend() override`**: Overrides the `getPacketToSend` method from `IUser` and returns a vector of packets to be sent by the user.
+- **`virtual boost::asio::ip::udp::endpoint &getEndPoint() = 0`**: Returns a reference to the user's UDP endpoint.
 
-- **`std::mutex &getMutex() override`**: Overrides the `getMutex` method from `IUser` and returns a reference to the mutex object for ensuring thread safety during user operations.
+- **`virtual int getWaitedIdPacket() const = 0`**: Retrieves the waited ID of a packet as an integer.
 
-### Protected Properties
+- **`virtual void addPacket(const Json::Value &packet) = 0`**: Adds a packet to the user's packet list.
 
-- **`Json::Value _data`**: JSON data associated with the user, allowing customization and additional user-specific attributes.
+- **`virtual void updateEvent() = 0`**: Updates the events associated with the user's packet list.
 
-- **`ObjectManager _objectManager`**: Object manager responsible for managing objects associated with the user within the network engine.
+- **`virtual void checkSentPacket(const Json::Value &sended) = 0`**: Checks and sends a packet if it has not been sent.
 
-- **`sendEventManager _sendEventManager`**: Event manager facilitating event handling for the user.
+- **`virtual std::vector<Json::Value> getPacketToSend() = 0`**: Retrieves a vector of packets to be sent.
 
-- **`boost::asio::ip::udp::endpoint _endpoint`**: Network endpoint representing the user's connection point (IP address and port).
+## Class UserManager
 
-- **`std::vector<Json::Value> _packetToHandle`**: Vector storing packets received by the user for processing.
+The `UserManager` class, part of the UnitiNetEngine namespace, manages user objects and provides methods for creating, retrieving, and updating users within the network engine.
 
-- **`std::list<int> _packetHandled`**: List storing IDs of packets that have been successfully processed by the user.
+### Public Methods
 
-- **`std::vector<Json::Value> _packetToSend`**: Vector storing packets to be sent by the user to other network entities.
+- **`IUser &getUser(size_t id)`**: Retrieves a user by their ID.
 
-- **`std::list<int> _receivedPacket`**: List storing IDs of packets received by the user for synchronization and tracking.
+- **`bool isUserExist(size_t id) const`**: Checks if a user with a specific ID exists.
 
-- **`int _waitedId = 0`**: Integer representing the ID of the awaited packet for synchronization purposes.
+- **`bool isUserExist(const Json::Value &value) const`**: Checks if a user with specific user information exists.
 
-- **`int _sendId = 0`**: Integer representing the ID of the next packet to be sent by the user.
+- **`IUser &getUser(const Json::Value &user)`**: Retrieves a user based on user information.
 
-- **`std::mutex _mutex`**: Mutex ensuring thread safety during user operations and packet handling.
+- **`void addUser(std::unique_ptr<IUser> user)`**: Adds a user to the user manager.
+
+- **`template<typename OBJECT> void addUserCreator()`**: Template method for adding a user creator function, allowing dynamic user creation.
+
+- **`void createUser(const Json::Value &value, const boost::asio::ip::udp::endpoint &endpoint)`**: Creates a user based on user information and UDP endpoint.
+
+- **`const std::vector<std::unique_ptr<IUser>> &getUsers() const`**: Retrieves the vector of user objects as a constant reference.
+
+- **`std::vector<std::unique_ptr<IUser>> &getUsers()`**: Retrieves the vector of user objects as a reference, allowing modifications.
+
+- **`void removeUser(const Json::Value &value)`**: Removes a user based on user information.
+
+- **`void removeUser(const boost::asio::ip::udp::endpoint &endpoint)`**: Removes a user based on their UDP endpoint.
+
+- **`std::mutex &getMutex()`**: Retrieves a reference to the mutex used for concurrency and thread safety.
+
+- **`void update()`**: Updates the user manager, triggering necessary internal logic or behavior.
+
+- **`std::map<boost::asio::ip::udp::endpoint, Json::Value> getPacketToSend()`**: Retrieves a map of UDP endpoints and corresponding JSON values to be sent.
+
+### Private Properties
+
+- **`std::mutex _mutex`**: A mutex for handling concurrency and ensuring thread safety.
+
+- **`std::vector<std::unique_ptr<IUser>> _users`**: A vector containing unique pointers to user objects.
+
+- **`createUserFunction _creator = nullptr`**: A function pointer for creating user objects based on provided information and endpoints.
 
 ---
 
-*This documentation explains the methods and properties of the `AUser` class within the UnitiNetEngine, emphasizing its role as an abstract user entity in the network engine context. Developers can use this class as a foundation for creating specific user implementations and managing interactions within the network engine.*
+*This documentation provides an overview of the `IUser` and `UserManager` classes within the UnitiNetEngine, emphasizing their functionalities and usage in the network engine environment.*
