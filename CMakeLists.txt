@@ -66,9 +66,38 @@ endforeach()
 
 target_link_libraries(project PRIVATE Threads::Threads)
 
-target_link_libraries(project PRIVATE jsoncpp_lib)
+target_link_libraries(project PRIVATE jsoncpp_static jsoncpp_object jsoncpp_lib)
 
 
 add_subdirectory(NetworkEngine)
 add_subdirectory(src)
 add_subdirectory(Scripts)
+
+file(COPY ${CMAKE_SOURCE_DIR}/json DESTINATION .)
+
+install(TARGETS project
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/json" DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+include(InstallRequiredSystemLibraries)
+
+set(CPACK_PACKAGE_NAME "rtype")
+set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_DESCRIPTION "Description de MonProjet")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "RTYPE-SERVER")
+set(CPACK_PACKAGE_CONTACT "younes1.bahri@epitech.eu")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "${CPACK_PACKAGE_CONTACT}")
+
+if(WIN32)
+    set(CPACK_GENERATOR "NSIS")
+elseif(APPLE)
+    set(CPACK_GENERATOR "DragNDrop")
+else()
+    set(CPACK_GENERATOR "DEB;RPM")
+endif()
+
+include(CPack)

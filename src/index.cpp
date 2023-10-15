@@ -11,7 +11,7 @@
 int main() {
     try {
         std::srand(time(NULL));
-        UnitiNetEngine::Uniti::init("../json/project.json");
+        UnitiNetEngine::Uniti::init("./json/project.json");
 
         UnitiNetEngine::Uniti::getInstance().getUserManager().addUserCreator<User>();
 
