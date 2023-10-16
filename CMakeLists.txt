@@ -85,7 +85,7 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/json" DESTINATION ${CMAKE_INSTALL
 
 include(InstallRequiredSystemLibraries)
 
-set(CPACK_PACKAGE_NAME "rtype")
+set(CPACK_PACKAGE_NAME "rtype-server")
 set(CPACK_PACKAGE_VERSION "1.0.0")
 set(CPACK_PACKAGE_DESCRIPTION "Description de MonProjet")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "RTYPE-SERVER")
